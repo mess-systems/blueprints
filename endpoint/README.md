@@ -4,7 +4,7 @@ The employee device: laptops and desktops that people work on. This blueprint fi
 
 **Status:** draft, evolving. Created 2026-10-15.
 
-**Capability code.** The naming standard has no capability code for devices yet, because devices are not services and get no service DNS name. The folder is called `endpoint`, the same word the standard uses for the device object family and its label keys (`endpoint-profile`). The [tech radar](https://github.com/mess-systems/tech-radar) category `device` is a catalog code for the same area; it is not a name token.
+**Capability code.** `endpoint`, the device-side capability code of the [naming standard](https://github.com/mess-systems/naming-standard/blob/main/01-naming-conventions.md#43-capability-codes-unique-across-all-domains) (v2.2). It names what runs on employee devices and never appears in a DNS name. The [tech radar](https://github.com/mess-systems/tech-radar) category `device` covers the same area; it is a catalog code, not a name token.
 
 ## 1. Scope
 
@@ -45,9 +45,9 @@ Device name: `<profile>-<form>-<asset-id>`, for example `eng-lt-k7m2qa`.
 - The name grants nothing. Access comes from groups and device posture, never from the name.
 - Endpoints have no records in the service DNS zone.
 
-Labels in Fleet and Wazuh follow [labels and tags](https://github.com/mess-systems/naming-standard/blob/main/05-labels-and-tags.md): `plane`, `owner` (a group), `endpoint-profile`, `device-form`, `data-class`. User name, serial number and hostname never go into labels.
+Labels in Fleet and Wazuh carry `capability=endpoint` and follow [labels and tags](https://github.com/mess-systems/naming-standard/blob/main/05-labels-and-tags.md): `plane`, `owner` (a group), `endpoint-profile`, `device-form`, `data-class`. User name, serial number and hostname never go into labels.
 
-The device naming rule is a proposal for naming-standard v2.2; until it is merged there, this blueprint is the public description.
+The naming rule is part of naming-standard v2.2: [06 Endpoint conventions](https://github.com/mess-systems/naming-standard/blob/main/06-endpoint-conventions.md).
 
 ## 4. Resident agents
 
