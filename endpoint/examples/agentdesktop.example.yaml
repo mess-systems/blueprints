@@ -1,0 +1,12 @@
+# EXAMPLE ONLY. Placeholder values; not the configuration of any running system.
+# agentdesktop on std and eng: AI clients send model traffic to the company AI gateway
+# with short-lived credentials. Provider keys stay at the gateway.
+# Shape follows the public agentdesktop documentation (https://agentdesktop.dev/docs/).
+llmGateway:
+  url: https://ai-gateway.example.com
+  authentication:
+    type: controllerJwt
+    audience: agentgateway
+    allowedClientIds:
+      - opencode
+      - codex

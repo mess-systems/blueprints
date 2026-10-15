@@ -1,0 +1,32 @@
+<!-- EXAMPLE ONLY. Placeholder values; not the configuration of any running system. -->
+<!-- Wazuh agent: read osquery results produced by fleetd, switch off duplicate
+     inventory (syscollector) and configuration assessment (SCA), which Fleet owns. -->
+<ossec_config>
+  <client>
+    <server>
+      <address>siem-manager.example.com</address>
+      <port>1514</port>
+      <protocol>tcp</protocol>
+    </server>
+  </client>
+
+  <wodle name="osquery">
+    <disabled>no</disabled>
+    <run_daemon>no</run_daemon>
+    <log_path>/var/log/osquery/osqueryd.results.log</log_path>
+    <add_labels>yes</add_labels>
+  </wodle>
+
+  <wodle name="syscollector">
+    <disabled>yes</disabled>
+  </wodle>
+
+  <sca>
+    <enabled>no</enabled>
+  </sca>
+
+  <labels>
+    <label key="endpoint-profile">std</label>
+    <label key="device-form">lt</label>
+  </labels>
+</ossec_config>

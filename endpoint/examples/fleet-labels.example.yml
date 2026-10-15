@@ -1,0 +1,27 @@
+# EXAMPLE ONLY. Placeholder values; not the configuration of any running system.
+# Fleet labels that group devices by endpoint profile, derived from the device name
+# <profile>-<form>-<asset-id>. Apply with fleetctl apply -f <file>.
+---
+apiVersion: v1
+kind: label
+spec:
+  name: endpoint-profile-std
+  description: Devices on the std baseline
+  query: SELECT 1 FROM system_info WHERE computer_name LIKE 'std-%';
+  label_membership_type: dynamic
+---
+apiVersion: v1
+kind: label
+spec:
+  name: endpoint-profile-eng
+  description: Devices on the eng baseline
+  query: SELECT 1 FROM system_info WHERE computer_name LIKE 'eng-%';
+  label_membership_type: dynamic
+---
+apiVersion: v1
+kind: label
+spec:
+  name: endpoint-profile-paw
+  description: Privileged-access workstations
+  query: SELECT 1 FROM system_info WHERE computer_name LIKE 'paw-%';
+  label_membership_type: dynamic
