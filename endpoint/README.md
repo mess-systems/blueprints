@@ -1,10 +1,12 @@
+**English** | [Русский](README.ru.md) | [简体中文](README.zh-CN.md)
+
 # Blueprint: endpoint
 
 The employee device: laptops and desktops that people work on. This blueprint fixes which resident agents run on a device, which applications are standard, how devices are named and labelled, and why.
 
 **Status:** draft, evolving. Created 2026-10-15.
 
-**Capability code.** `endpoint`, the device-side capability code of the [naming standard](https://github.com/mess-systems/naming-standard/blob/main/01-naming-conventions.md#43-capability-codes-unique-across-all-domains) (v2.2). It names what runs on employee devices and never appears in a DNS name. The [tech radar](https://github.com/mess-systems/tech-radar) category `device` covers the same area; it is a catalog code, not a name token.
+**Capability code.** `endpoint` in the domain `device` of the [naming standard](https://github.com/mess-systems/naming-standard/blob/main/01-naming-conventions.md#43-capability-codes-unique-across-all-domains) (v2.3). It names what runs on employee devices and never appears in a DNS name. The [tech radar](https://github.com/mess-systems/tech-radar) uses `device` as the category for the same area. Browser-delivered virtual desktops are the server-side capability `vdi` in the same domain.
 
 ## 1. Scope
 
@@ -47,7 +49,7 @@ Device name: `<profile>-<form>-<asset-id>`, for example `eng-lt-k7m2qa`.
 
 Labels in Fleet and Wazuh carry `capability=endpoint` and follow [labels and tags](https://github.com/mess-systems/naming-standard/blob/main/05-labels-and-tags.md): `plane`, `owner` (a group), `endpoint-profile`, `device-form`, `data-class`. User name, serial number and hostname never go into labels.
 
-The naming rule is part of naming-standard v2.2: [06 Endpoint conventions](https://github.com/mess-systems/naming-standard/blob/main/06-endpoint-conventions.md).
+The naming rule is part of naming-standard (since v2.2): [06 Endpoint conventions](https://github.com/mess-systems/naming-standard/blob/main/06-endpoint-conventions.md).
 
 ## 4. Resident agents
 
@@ -110,7 +112,7 @@ Started by the user; they do not run in the background. The radar covers product
 | User configuration | chezmoi | `eng` | outside the radar |
 | AI CLI agents | OpenCode by default; goose, Codex CLI, Gemini CLI | `eng` | no cards yet |
 | AI chat for everyone | LibreChat web client through the AI gateway | `std`, `eng` | [LibreChat](https://github.com/mess-systems/tech-radar/blob/main/technologies/librechat.md) (Trial), [agentgateway](https://github.com/mess-systems/tech-radar/blob/main/technologies/agentgateway.md) (Adopt) |
-| Remote desktops for risky work | Kasm Workspaces in the browser | `std`, `eng` | [Kasm Workspaces](https://github.com/mess-systems/tech-radar/blob/main/technologies/kasm-workspaces.md) (Adopt) |
+| Remote desktops for risky work (capability `vdi`) | Kasm Workspaces in the browser | `std`, `eng` | [Kasm Workspaces](https://github.com/mess-systems/tech-radar/blob/main/technologies/kasm-workspaces.md) (Adopt) |
 | Windows applications on Linux | WinBoat | `eng` on Linux | [WinBoat](https://github.com/mess-systems/tech-radar/blob/main/technologies/winboat.md) (Adopt) |
 
 On `paw`: browser, password manager and admin tools only. No mail, chat or AI clients.
