@@ -105,6 +105,7 @@ Fleet 和 Wazuh 中的标签带有 `capability=endpoint`，并遵循[标签与�
 | 办公 | LibreOffice | `std`、`eng` | 不在雷达中 |
 | 邮件 | Thunderbird | `std`、`eng` | 不在雷达中 |
 | 密码 | Bitwarden 客户端；离线 KeePassXC | 全部 | 服务器 [Vaultwarden](https://github.com/mess-systems/tech-radar/blob/main/technologies/vaultwarden.md) 处于 Assess |
+| 密钥库客户端 | `bao` CLI，通过 SSO（OIDC）登录，磁盘上不保存长期令牌 | `eng`、`paw` | [OpenBao](https://github.com/mess-systems/tech-radar/blob/main/technologies/openbao.md)（Adopt） |
 | 聊天 | Element | `std`、`eng` | [Matrix](https://github.com/mess-systems/tech-radar/blob/main/technologies/matrix.md)（Adopt）作为协议 |
 | 压缩 | 7-Zip | `std`、`eng` | 不在雷达中 |
 | 媒体 | VLC | `std`、`eng` | 不在雷达中 |

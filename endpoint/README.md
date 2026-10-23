@@ -105,6 +105,7 @@ Started by the user; they do not run in the background. The radar covers product
 | Office | LibreOffice | `std`, `eng` | outside the radar |
 | Mail | Thunderbird | `std`, `eng` | outside the radar |
 | Passwords | Bitwarden client; KeePassXC offline | all | server [Vaultwarden](https://github.com/mess-systems/tech-radar/blob/main/technologies/vaultwarden.md) in Assess |
+| Secrets vault client | `bao` CLI, sign-in through SSO (OIDC), no long-lived tokens on disk | `eng`, `paw` | [OpenBao](https://github.com/mess-systems/tech-radar/blob/main/technologies/openbao.md) (Adopt) |
 | Chat | Element | `std`, `eng` | [Matrix](https://github.com/mess-systems/tech-radar/blob/main/technologies/matrix.md) (Adopt) as the protocol |
 | Archiver | 7-Zip | `std`, `eng` | outside the radar |
 | Media | VLC | `std`, `eng` | outside the radar |

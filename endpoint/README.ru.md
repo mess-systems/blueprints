@@ -105,6 +105,7 @@ AI пользуются все, поэтому контроль AI-клиент�
 | Офис | LibreOffice | `std`, `eng` | вне радара |
 | Почта | Thunderbird | `std`, `eng` | вне радара |
 | Пароли | Клиент Bitwarden; офлайн KeePassXC | все | сервер [Vaultwarden](https://github.com/mess-systems/tech-radar/blob/main/technologies/vaultwarden.md) в Assess |
+| Клиент хранилища секретов | CLI `bao`, вход через SSO (OIDC), без долгоживущих токенов на диске | `eng`, `paw` | [OpenBao](https://github.com/mess-systems/tech-radar/blob/main/technologies/openbao.md) (Adopt) |
 | Чат | Element | `std`, `eng` | [Matrix](https://github.com/mess-systems/tech-radar/blob/main/technologies/matrix.md) (Adopt) как протокол |
 | Архиватор | 7-Zip | `std`, `eng` | вне радара |
 | Медиа | VLC | `std`, `eng` | вне радара |
