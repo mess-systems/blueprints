@@ -3,7 +3,7 @@
 # with short-lived credentials. Provider keys stay at the gateway.
 # Shape follows the public agentdesktop documentation (https://agentdesktop.dev/docs/).
 llmGateway:
-  url: https://ai-gateway.example.com
+  url: https://gateway.ai.corp.svc.mess.systems
   authentication:
     type: controllerJwt
     audience: agentgateway

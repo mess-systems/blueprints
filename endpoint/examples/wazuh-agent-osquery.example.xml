@@ -4,7 +4,7 @@
 <ossec_config>
   <client>
     <server>
-      <address>siem-manager.example.com</address>
+      <address>siem.sec.shared.svc.mess.systems</address>
       <port>1514</port>
       <protocol>tcp</protocol>
     </server>

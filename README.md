@@ -41,7 +41,7 @@ The folder name is the capability, never a product (`endpoint`, not the name of 
 
 ## What a blueprint never contains
 
-Hostnames, IP addresses, real configuration, secret paths, access groups, device inventory or agent versions. Examples use placeholder values such as `example.com`.
+Hostnames, IP addresses, real configuration, secret paths, access groups, device inventory or agent versions. Examples use names under the `mess.systems` domain, such as `gateway.ai.corp.svc.mess.systems`.
 
 ## Changing a blueprint
 
