@@ -1,9 +1,17 @@
 # yaml-language-server: $schema=https://agentgateway.dev/schema/config
 # Blueprint obs-mcp-readonly: EXAMPLE, not a running configuration.
 # Fictional hosts under mess.systems. Field names follow the agentgateway
-# standalone docs (mcp-authn, mcp-authz). Tool names follow the server READMEs;
-# check them against tools/list of the server versions you run.
+# standalone docs and config schema (mcp-authn, mcp-authz, backend-authn token
+# exchange, access logs; agentgateway v1.7.0). Tool names follow the server
+# READMEs; check them against tools/list of the server versions you run.
 # Targets are named by capability code (naming standard, object forms).
+#
+# Token exchange below is the fallback path of README section 4.3 (Keycloak
+# standard token exchange): the incoming token is never forwarded, each target
+# gets a token whose audience is only its MCP server. With the delegation path
+# (section 4.2) Keycloak rejects a second exchange of a token that carries
+# `act`; remove backendAuth there and authenticate the gateway to the MCP
+# servers with its own credential.
 
 mcp:
   policies:
@@ -32,6 +40,55 @@ mcp:
   - name: k8s
     mcp:
       host: http://mcp-k8s.gateway.svc.cluster.local:8080/mcp
+    policies:
+      backendAuth:
+        oauthTokenExchange:
+          host: sso.iam.shared.svc.mess.systems:443
+          path: /realms/mess-systems/protocol/openid-connect/token
+          policies:
+            backendTLS: {}
+          clientAuth:
+            method: privateKeyJwt
+            clientId: svc-corp-ai-agentgateway
+            signingKey:
+              file: /etc/agentgateway/keys/token-exchange.pem
+            alg: ES256
+            assertionAudience: https://sso.iam.shared.svc.mess.systems/realms/mess-systems/protocol/openid-connect/token
+          # Keycloak does not support the RFC 8707 resource parameter; use audience.
+          # Audience = Keycloak client of the MCP server (illustrative, IdP
+          # application form). The gateway client is a service account.
+          audiences:
+          - corp-infra-kubernetes-mcp-server
   - name: dashboards
     mcp:
       host: http://mcp-dashboards.gateway.svc.cluster.local:8080/mcp
+    policies:
+      backendAuth:
+        oauthTokenExchange:
+          host: sso.iam.shared.svc.mess.systems:443
+          path: /realms/mess-systems/protocol/openid-connect/token
+          policies:
+            backendTLS: {}
+          clientAuth:
+            method: privateKeyJwt
+            clientId: svc-corp-ai-agentgateway
+            signingKey:
+              file: /etc/agentgateway/keys/token-exchange.pem
+            alg: ES256
+            assertionAudience: https://sso.iam.shared.svc.mess.systems/realms/mess-systems/protocol/openid-connect/token
+          # Keycloak does not support the RFC 8707 resource parameter; use audience.
+          audiences:
+          - corp-obs-mcp-grafana
+
+# Audit fields (README section 6). jwt holds the claims of the token validated
+# by mcpAuthentication. A delegated token carries act and no sid; a token from
+# the fallback path carries azp and sid. request.agent.session comes from client
+# headers such as x-session-id and is not authenticated.
+frontendPolicies:
+  accessLog:
+    add:
+      user.id: 'has(jwt.sub) ? jwt.sub : ""'
+      agent.client_id: 'has(jwt.act) && has(jwt.act.client_id) ? jwt.act.client_id : (has(jwt.azp) ? jwt.azp : "")'
+      auth.session_id: 'has(jwt.sid) ? jwt.sid : ""'
+      agent.session: 'has(request.agent.session) ? request.agent.session : ""'
+      # Result hash: requirement, not configured here. See README section 6.
