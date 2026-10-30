@@ -16,6 +16,7 @@ A blueprint is a ready solution for one capability. It answers four questions:
 | Folder | Capability | Status |
 |---|---|---|
 | [endpoint/](endpoint/) | Employee device: laptops and desktops, resident agents, standard applications | Draft, evolving |
+| [obs-mcp-readonly/](obs-mcp-readonly/) | Read-only agent access to Kubernetes, metrics and logs over MCP | Draft, evolving |
 
 Planned next: AI gateway, identity, CI.
 

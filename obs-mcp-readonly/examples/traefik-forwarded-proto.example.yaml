@@ -1,0 +1,11 @@
+# Blueprint obs-mcp-readonly: EXAMPLE, not a running configuration.
+# Traefik dynamic configuration (file provider).
+# Use when TLS terminates on the edge proxy and the X-Forwarded-Proto header
+# does not reach the gateway. The preferred fix is to trust forwarded headers
+# from the edge proxy (entryPoints.<name>.forwardedHeaders.trustedIPs).
+http:
+  middlewares:
+    force-https-proto:
+      headers:
+        customRequestHeaders:
+          X-Forwarded-Proto: "https"

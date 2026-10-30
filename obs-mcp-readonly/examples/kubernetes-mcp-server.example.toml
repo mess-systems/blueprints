@@ -1,0 +1,12 @@
+# Blueprint obs-mcp-readonly: EXAMPLE, not a running configuration.
+# kubernetes-mcp-server reads runtime settings from TOML (--config), not CLI flags.
+# Keys follow the project README and docs/configuration.md.
+
+read_only = true
+toolsets = ["core"]
+
+# Never return Secret objects, even if RBAC were to allow them.
+[[denied_resources]]
+group = ""
+version = "v1"
+kind = "Secret"

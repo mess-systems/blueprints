@@ -1,0 +1,14 @@
+# Blueprint obs-mcp-readonly: EXAMPLE, not a running configuration.
+# Resources are listed explicitly instead of "*", so Secret cannot be added by accident.
+# configmaps is included by choice; remove it if ConfigMaps in your clusters hold sensitive data.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: mcp-k8s-readonly
+rules:
+- apiGroups: [""]
+  resources: ["pods", "pods/log", "services", "events", "namespaces", "nodes", "configmaps"]
+  verbs: ["get", "list", "watch"]
+- apiGroups: ["apps"]
+  resources: ["deployments", "statefulsets", "daemonsets", "replicasets"]
+  verbs: ["get", "list", "watch"]

@@ -1,0 +1,37 @@
+# yaml-language-server: $schema=https://agentgateway.dev/schema/config
+# Blueprint obs-mcp-readonly: EXAMPLE, not a running configuration.
+# Fictional hosts under mess.systems. Field names follow the agentgateway
+# standalone docs (mcp-authn, mcp-authz). Tool names follow the server READMEs;
+# check them against tools/list of the server versions you run.
+# Targets are named by capability code (naming standard, object forms).
+
+mcp:
+  policies:
+    mcpAuthentication:
+      mode: strict
+      issuer: https://sso.iam.shared.svc.mess.systems/realms/mess-systems
+      audiences:
+      - https://gateway.ai.corp.svc.mess.systems/mcp
+      jwks:
+        url: https://sso.iam.shared.svc.mess.systems/realms/mess-systems/protocol/openid-connect/certs
+      provider:
+        keycloak: {}
+      resourceMetadata:
+        resource: https://gateway.ai.corp.svc.mess.systems/mcp
+        scopesSupported:
+        - openid
+        bearerMethodsSupported:
+        - header
+    mcpAuthorization:
+      rules:
+      # Kubernetes: read tools only
+      - 'mcp.tool.target == "k8s" && mcp.tool.name in ["resources_list", "resources_get", "events_list", "pods_list", "pods_list_in_namespace", "pods_get", "pods_log", "namespaces_list"]'
+      # Grafana datasources: Prometheus and Loki queries only
+      - 'mcp.tool.target == "dashboards" && mcp.tool.name in ["query_prometheus", "list_prometheus_metric_names", "query_loki_logs", "list_loki_label_names", "list_loki_label_values"]'
+  targets:
+  - name: k8s
+    mcp:
+      host: http://mcp-k8s.gateway.svc.cluster.local:8080/mcp
+  - name: dashboards
+    mcp:
+      host: http://mcp-dashboards.gateway.svc.cluster.local:8080/mcp

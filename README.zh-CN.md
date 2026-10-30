@@ -16,6 +16,7 @@
 | 目录 | 能力 | 状态 |
 |---|---|---|
 | [endpoint/](endpoint/) | 员工设备：笔记本和台式机、常驻代理、标准应用 | 草稿，持续演进 |
+| [obs-mcp-readonly/](obs-mcp-readonly/) | 代理通过 MCP 只读访问 Kubernetes、指标和日志 | 草稿，持续演进 |
 
 计划中：AI 网关、身份、CI。
 
