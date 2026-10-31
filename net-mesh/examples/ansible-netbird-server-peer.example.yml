@@ -1,0 +1,107 @@
+# Blueprint net-mesh: EXAMPLE, not a running configuration.
+# Enrol a server as a mesh peer with a one-off setup key.
+#
+# - The key is created for this host only, used once and deleted right after.
+#   It takes the host name, as the naming standard requires for setup keys.
+# - Auto-groups put the peer into its zone, site and service groups; the IDs
+#   come from the outputs of the OpenTofu stack.
+# - NB_PAT, the token of the service user svc-shared-net-iac, is set in the
+#   controller environment from OpenBao just before the run. It is never written to disk, and no task prints it.
+# - Re-running is safe: a host that is already connected is skipped.
+
+- name: Enrol server peers into the corporate mesh
+  hosts: mesh_server_peers
+  become: true
+  vars:
+    netbird_management_url: "https://mesh.net.shared.svc.mess.systems"
+    netbird_api_url: "{{ netbird_management_url }}/api"
+    # Set per host or group in inventory, e.g. [zone-corp, site-dc1, svc-<application>] IDs.
+    netbird_auto_groups: []
+    netbird_key_file: /run/netbird-setup-key
+
+  tasks:
+    - name: Add the NetBird package signing key
+      ansible.builtin.get_url:
+        url: https://pkgs.netbird.io/debian/public.key
+        dest: /usr/share/keyrings/netbird-archive-keyring.asc
+        mode: "0644"
+
+    - name: Add the NetBird APT repository
+      ansible.builtin.apt_repository:
+        repo: "deb [signed-by=/usr/share/keyrings/netbird-archive-keyring.asc] https://pkgs.netbird.io/debian stable main"
+        filename: netbird
+        state: present
+
+    - name: Install the NetBird client
+      ansible.builtin.apt:
+        name: netbird
+        state: present
+        update_cache: true
+
+    - name: Read the current mesh state
+      ansible.builtin.command: netbird status --json
+      register: netbird_status
+      changed_when: false
+      failed_when: false
+
+    - name: Decide whether the host must enrol
+      ansible.builtin.set_fact:
+        netbird_needs_enrol: >-
+          {{ netbird_status.rc != 0
+             or (netbird_status.stdout | from_json).management.connected is not sameas true }}
+
+    - name: Enrol the host
+      when: netbird_needs_enrol | bool
+      block:
+        - name: Create a one-off setup key for this host
+          ansible.builtin.uri:
+            url: "{{ netbird_api_url }}/setup-keys"
+            method: POST
+            headers:
+              Authorization: "Token {{ lookup('ansible.builtin.env', 'NB_PAT') }}"
+            body_format: json
+            body:
+              name: "{{ inventory_hostname }}"
+              type: one-off
+              expires_in: 86400
+              auto_groups: "{{ netbird_auto_groups }}"
+              ephemeral: false
+            status_code: [200, 201]
+          delegate_to: localhost
+          become: false
+          register: netbird_setup_key
+          no_log: true
+
+        - name: Write the key to a root-only file in tmpfs
+          ansible.builtin.copy:
+            content: "{{ netbird_setup_key.json.key }}"
+            dest: "{{ netbird_key_file }}"
+            owner: root
+            group: root
+            mode: "0600"
+          no_log: true
+
+        - name: Connect to the management server
+          ansible.builtin.command: >-
+            netbird up
+            --management-url {{ netbird_management_url }}
+            --setup-key-file {{ netbird_key_file }}
+          changed_when: true
+
+      always:
+        - name: Remove the key file
+          ansible.builtin.file:
+            path: "{{ netbird_key_file }}"
+            state: absent
+
+        - name: Delete the setup key in management
+          ansible.builtin.uri:
+            url: "{{ netbird_api_url }}/setup-keys/{{ netbird_setup_key.json.id }}"
+            method: DELETE
+            headers:
+              Authorization: "Token {{ lookup('ansible.builtin.env', 'NB_PAT') }}"
+            status_code: [200, 204]
+          delegate_to: localhost
+          become: false
+          when: netbird_setup_key.json is defined
+          no_log: true

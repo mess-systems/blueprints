@@ -17,8 +17,17 @@
 |---|---|---|
 | [endpoint/](endpoint/) | 员工设备：笔记本和台式机、常驻代理、标准应用 | 草稿，持续演进 |
 | [obs-mcp-readonly/](obs-mcp-readonly/) | 代理通过 MCP 只读访问 Kubernetes、指标和日志 | 草稿，持续演进 |
+| [net-mesh/](net-mesh/) | 私有网状网络：协调器、组与策略、节点接入、分离 DNS、发布产品 | 草稿，持续演进 |
 
 计划中：AI 网关、身份、CI。
+
+## 实践
+
+实践描述如何开展能力相关的工作，而不是能力本身。实践目录以实践命名。
+
+| 目录 | 实践 | 状态 |
+|---|---|---|
+| [agent-assisted-network-rollout/](agent-assisted-network-rollout/) | 借助 AI 代理推行网络和访问变更：角色、阶段、关卡、证据 | 草稿，持续演进 |
 
 ## 三个仓库的关系
 

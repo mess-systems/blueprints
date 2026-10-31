@@ -1,0 +1,61 @@
+#!/usr/sbin/nft -f
+# Blueprint net-mesh: EXAMPLE, not a running configuration.
+# Host firewall of a server peer, delivered by Ansible.
+#
+# Rules:
+# - The organization's rules live in their own table. The file never runs
+#   "flush ruleset": that would also remove table netbird and break mesh
+#   traffic until the client restores its rules.
+# - Traffic on the mesh interface (wt0) is filtered by NetBird policies in
+#   table netbird. The client inserts its own "iifname wt0 accept" rule into
+#   foreign base chains with input and forward hooks, so this table does not
+#   repeat mesh policy.
+# - This table covers everything that does not come over the mesh: the LAN,
+#   the direct WireGuard path and the site collectors.
+# - Site collectors scrape over the LAN, not over wt0, so telemetry does not
+#   depend on the mesh it watches.
+# Addresses are from the RFC 5737 documentation ranges.
+
+table inet hostfw
+flush table inet hostfw
+
+table inet hostfw {
+    set mgmt_lan {
+        type ipv4_addr
+        flags interval
+        elements = { 192.0.2.0/26 }
+    }
+
+    set site_collectors {
+        type ipv4_addr
+        flags interval
+        elements = { 192.0.2.64/28 }
+    }
+
+    chain input {
+        type filter hook input priority filter; policy drop;
+        ct state established,related accept
+        ct state invalid drop
+        iifname "lo" accept
+        meta l4proto { icmp, ipv6-icmp } accept
+
+        # Direct WireGuard path between peers. Without it peers fall back to relay.
+        udp dport 51820 accept
+
+        # Break-glass SSH from the site management LAN, when the mesh is down.
+        ip saddr @mgmt_lan tcp dport 22 accept
+
+        # Site collectors (Prometheus) scrape the node exporter over the LAN.
+        ip saddr @site_collectors tcp dport 9100 accept
+    }
+
+    chain forward {
+        type filter hook forward priority filter; policy drop;
+        # On a routing peer the NetBird client inserts its own accept rules
+        # for wt0 here. Nothing else is forwarded.
+    }
+
+    chain output {
+        type filter hook output priority filter; policy accept;
+    }
+}
