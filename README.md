@@ -18,16 +18,9 @@ A blueprint is a ready solution for one capability. It answers four questions:
 | [endpoint/](endpoint/) | Employee device: laptops and desktops, resident agents, standard applications | Draft, evolving |
 | [obs-mcp-readonly/](obs-mcp-readonly/) | Read-only agent access to Kubernetes, metrics and logs over MCP | Draft, evolving |
 | [net-mesh/](net-mesh/) | Private mesh network: coordinator, groups and policies, enrolment, split DNS, publishing products | Draft, evolving |
+| [data-sql-access/](data-sql-access/) | People's access to PostgreSQL: login through the identity provider, temporary users from the secrets store, mesh policies, TLS, three-log audit | Draft, evolving |
 
 Planned next: AI gateway, identity, CI.
-
-## Practices
-
-A practice describes how work on capabilities is done rather than a capability itself. Its folder is named after the practice.
-
-| Folder | Practice | Status |
-|---|---|---|
-| [agent-assisted-network-rollout/](agent-assisted-network-rollout/) | Rolling out network and access changes with AI agents: roles, stages, gates, evidence | Draft, evolving |
 
 ## How the three repositories fit together
 
