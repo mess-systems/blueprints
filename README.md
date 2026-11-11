@@ -19,6 +19,7 @@ A blueprint is a ready solution for one capability. It answers four questions:
 | [obs-mcp-readonly/](obs-mcp-readonly/) | Read-only agent access to Kubernetes, metrics and logs over MCP | Draft, evolving |
 | [net-mesh/](net-mesh/) | Private mesh network: coordinator, groups and policies, enrolment, split DNS, publishing products | Draft, evolving |
 | [data-sql-access/](data-sql-access/) | People's access to PostgreSQL: login through the identity provider, temporary users from the secrets store, mesh policies, TLS, three-log audit | Draft, evolving |
+| [data-platform-stages/](data-platform-stages/README.ru.md) | Data platform by stages: simple, medium and target technology sets, and the conditions for moving between them | Draft, evolving |
 
 Planned next: AI gateway, identity, CI.
 

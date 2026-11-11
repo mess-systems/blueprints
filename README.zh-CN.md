@@ -19,6 +19,7 @@
 | [obs-mcp-readonly/](obs-mcp-readonly/) | 代理通过 MCP 只读访问 Kubernetes、指标和日志 | 草稿，持续演进 |
 | [net-mesh/](net-mesh/) | 私有网状网络：协调器、组与策略、节点接入、分离 DNS、发布产品 | 草稿，持续演进 |
 | [data-sql-access/](data-sql-access/) | 人员访问 PostgreSQL：通过身份提供方登录、密钥库签发临时用户、网状网络策略、TLS、三份日志审计 | 草稿，持续演进 |
+| [data-platform-stages/](data-platform-stages/README.ru.md) | 分阶段的数据平台：简单、中等与目标技术组合及过渡条件 | 草稿，持续演进 |
 
 计划中：AI 网关、身份、CI。
 
