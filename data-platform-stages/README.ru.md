@@ -65,13 +65,13 @@ CISO просит одну дверь и маскирование персона
 
 ```mermaid
 flowchart LR
-  INT[Внутренние системы] --> RAW[PostgreSQL: сырые данные]
-  SaaS[Старый SaaS] --> RAW
-  AF[Airflow] --> DBT[dbt: staging, витрины, тесты]
+  INT["Внутренние системы"] --> RAW["PostgreSQL: сырые данные"]
+  SaaS["Старый SaaS"] --> RAW
+  AF["Airflow"] --> DBT["dbt: staging, витрины, тесты"]
   RAW --> DBT
-  DBT --> SEM[Семантический слой Cube]
-  SEM --> BI[Superset]
-  DBT -. lineage .-> CAT[OpenMetadata]
+  DBT --> SEM["Семантический слой Cube"]
+  SEM --> BI["Superset"]
+  DBT -.->|lineage| OMD["OpenMetadata"]
 ```
 
 Состав:
@@ -98,15 +98,15 @@ flowchart LR
 
 ```mermaid
 flowchart LR
-  SRC[Источники: внутренние системы, старый SaaS, продукт, события]
-  PG[PostgreSQL на CloudNativePG]
-  KF[Kafka на Strimzi и Debezium]
-  CH[ClickHouse]
-  OBJ[Объектное хранилище: файлы и сырой архив]
-  AF[Airflow и dbt]
-  SEM[Cube]
-  BI[Superset]
-  CAT[OpenMetadata]
+  SRC["Источники: внутренние системы, старый SaaS, продукт, события"]
+  PG["PostgreSQL на CloudNativePG"]
+  KF["Kafka на Strimzi и Debezium"]
+  CH["ClickHouse"]
+  OBJ["Объектное хранилище: файлы и сырой архив"]
+  AF["Airflow и dbt"]
+  SEM["Cube"]
+  BI["Superset"]
+  OMD["OpenMetadata"]
 
   SRC --> PG
   SRC --> KF
@@ -117,7 +117,7 @@ flowchart LR
   CH --> SEM
   PG --> SEM
   SEM --> BI
-  AF -. lineage .-> CAT
+  AF -.->|lineage| OMD
 ```
 
 За тремя ролями стоят ещё Kafka и Debezium, объектное хранилище для файлов и сырого архива, Airflow, dbt, Superset и OpenMetadata. ClickHouse я бы не считал системой записи. Сырые события сразу копируются в объектное хранилище. Когда озеро понадобится, историю не придётся заново тянуть из источников. Это небольшая предусмотрительность, которая потом экономит и капитал, и сопровождение.
@@ -151,24 +151,24 @@ Kafka я бы ставил через оператор Strimzi. Реестр с�
 
 ```mermaid
 flowchart TB
-  SRC[Источники: внутренние системы, старый SaaS, продукт, события]
-  ING[Kafka на Strimzi и Kafka Connect: Debezium, Iceberg sink, ClickHouse sink]
-  LAKE[S3 и Apache Iceberg: raw, cleaned, marts]
-  ICAT[Apache Polaris: Iceberg REST catalog, RBAC]
-  TR[Trino: трансформации dbt, произвольный SQL]
-  CH[ClickHouse: горячие данные и события]
-  PG[PostgreSQL: финансы, метаданные]
-  SEM[Cube: метрики, права доступа, маскирование]
-  OUT[Superset, аналитика в продукте]
-  AG[Агенты через MCP]
-  GOV[OpenMetadata, Keycloak, OpenBao, Grafana]
+  SRC["Источники: внутренние системы, старый SaaS, продукт, события"]
+  ING["Kafka на Strimzi и Kafka Connect: Debezium, Iceberg sink, ClickHouse sink"]
+  LAKE["S3 и Apache Iceberg: raw, cleaned, marts"]
+  ICAT["Apache Polaris: Iceberg REST catalog, RBAC"]
+  TR["Trino: трансформации dbt, произвольный SQL"]
+  CH["ClickHouse: горячие данные и события"]
+  PG["PostgreSQL: финансы, метаданные"]
+  SEM["Cube: метрики, права доступа, маскирование"]
+  OUT["Superset, аналитика в продукте"]
+  AG["Агенты через MCP"]
+  GOV["OpenMetadata, Keycloak, OpenBao, Grafana"]
 
   SRC --> ING
   ING --> LAKE
   ING --> CH
   LAKE --- ICAT
   TR --- ICAT
-  CH -. читает холодное .- ICAT
+  CH -.-|читает холодное| ICAT
   TR --> LAKE
   LAKE --> CH
   CH --> SEM
