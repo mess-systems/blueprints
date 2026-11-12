@@ -20,8 +20,10 @@ A blueprint is a ready solution for one capability. It answers four questions:
 | [net-mesh/](net-mesh/) | Private mesh network: coordinator, groups and policies, enrolment, split DNS, publishing products | Draft, evolving |
 | [data-sql-access/](data-sql-access/) | People's access to PostgreSQL: login through the identity provider, temporary users from the secrets store, mesh policies, TLS, three-log audit | Draft, evolving |
 | [data-platform-stages/](data-platform-stages/README.ru.md) | Data platform by stages: simple, medium and target technology sets, and the conditions for moving between them | Draft, evolving |
+| [adlc-agent-evals/](adlc-agent-evals/README.ru.md) | Observing and checking AI agents in Kubernetes without a separate platform at the start: traces in Tempo, tokens and cost from the LLM gateway, check cases against the live cluster, a regression gate in CI | Draft, evolving |
+| [sdlc-ci-runners/](sdlc-ci-runners/README.ru.md) | Self-hosted GitHub Actions runners in Kubernetes: ARC runner scale sets, rootless BuildKit with registry cache, no privileged docker, a separate pool for pull requests | Draft, evolving |
 
-Planned next: AI gateway, identity, CI.
+Planned next: AI gateway, identity.
 
 ## How the three repositories fit together
 

@@ -21,8 +21,10 @@
 | [data-sql-access/](data-sql-access/) | Доступ людей к PostgreSQL: вход через поставщика удостоверений, временные пользователи из хранилища секретов, политики сети, TLS, аудит по трём журналам | Черновик, развивается |
 | [semantic-layer-cube/](semantic-layer-cube/README.ru.md) | Семантический слой данных на Cube: меры и измерения в коде, SQL API по протоколу PostgreSQL, REST и GraphQL, права по контексту безопасности, предварительные агрегаты | Черновик, развивается |
 | [data-platform-stages/](data-platform-stages/README.ru.md) | Платформа данных по этапам: простой, средний и целевой состав технологий и условия перехода | Черновик, развивается |
+| [adlc-agent-evals/](adlc-agent-evals/README.ru.md) | Наблюдение и проверка AI-агентов в Kubernetes без отдельной платформы на старте: трассы в Tempo, токены и стоимость из LLM-шлюза, проверочные случаи с эталоном из живого кластера, регрессионный гейт в CI | Черновик, развивается |
+| [sdlc-ci-runners/](sdlc-ci-runners/README.ru.md) | Self-hosted раннеры GitHub Actions в Kubernetes: ARC runner scale sets, rootless BuildKit с кэшем в registry, без privileged docker, отдельный пул для pull request | Черновик, развивается |
 
-Следующие: AI-шлюз, идентичность, CI.
+Следующие: AI-шлюз, идентичность.
 
 ## Как связаны три репозитория
 

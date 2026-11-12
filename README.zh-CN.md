@@ -20,8 +20,10 @@
 | [net-mesh/](net-mesh/) | 私有网状网络：协调器、组与策略、节点接入、分离 DNS、发布产品 | 草稿，持续演进 |
 | [data-sql-access/](data-sql-access/) | 人员访问 PostgreSQL：通过身份提供方登录、密钥库签发临时用户、网状网络策略、TLS、三份日志审计 | 草稿，持续演进 |
 | [data-platform-stages/](data-platform-stages/README.ru.md) | 分阶段的数据平台：简单、中等与目标技术组合及过渡条件 | 草稿，持续演进 |
+| [adlc-agent-evals/](adlc-agent-evals/README.ru.md) | 在 Kubernetes 中观测和检查 AI 智能体，起步时不另建平台：Tempo 存储链路，从 LLM 网关获取令牌与成本，以实时集群为基准的检查用例，CI 中的回归门禁 | 草稿，持续演进 |
+| [sdlc-ci-runners/](sdlc-ci-runners/README.ru.md) | 在 Kubernetes 中自托管 GitHub Actions runner：ARC runner scale sets、带 registry 缓存的 rootless BuildKit，不用 privileged docker，pull request 单独的池 | 草稿，持续演进 |
 
-计划中：AI 网关、身份、CI。
+计划中：AI 网关、身份。
 
 ## 三个仓库的关系
 
