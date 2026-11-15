@@ -53,6 +53,8 @@ Hostnames, IP addresses, real configuration, secret paths, access groups, device
 
 A change is a pull request with a short rationale. A new component must first have a radar card.
 
+A new blueprint starts from the template [TEMPLATE.ru.md](TEMPLATE.ru.md) (Russian for now): fourteen sections, stages with transition conditions are required, and a section that does not apply keeps its heading with the reason. The template applies to new blueprints; existing ones are not rewritten.
+
 ## License
 
 Text licensed under [Creative Commons Attribution 4.0 International (CC BY 4.0)](LICENSE). Attribution: "mess.systems blueprints (https://github.com/mess-systems/blueprints), CC BY 4.0".
