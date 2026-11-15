@@ -53,6 +53,8 @@
 
 修改以 pull request 提交并附简短理由。新组件须先有雷达卡片。
 
+新的参考架构从模板 [TEMPLATE.ru.md](TEMPLATE.ru.md)（目前为俄文）开始：十四个章节，必须包含带过渡条件的阶段，不适用的章节保留标题并说明原因。模板适用于新的参考架构，现有的不重写。
+
 ## 许可
 
 文本采用 [CC BY 4.0](LICENSE) 许可。署名："mess.systems blueprints (https://github.com/mess-systems/blueprints), CC BY 4.0"。
