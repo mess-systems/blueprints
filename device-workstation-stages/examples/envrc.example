@@ -1,0 +1,2 @@
+# ПРИМЕР. .envrc в корне репозитория (direnv + nix-direnv)
+use flake

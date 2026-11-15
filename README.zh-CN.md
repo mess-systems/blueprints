@@ -22,6 +22,7 @@
 | [data-platform-stages/](data-platform-stages/README.ru.md) | 分阶段的数据平台：简单、中等与目标技术组合及过渡条件 | 草稿，持续演进 |
 | [adlc-agent-evals/](adlc-agent-evals/README.ru.md) | 在 Kubernetes 中观测和检查 AI 智能体，起步时不另建平台：Tempo 存储链路，从 LLM 网关获取令牌与成本，以实时集群为基准的检查用例，CI 中的回归门禁 | 草稿，持续演进 |
 | [sdlc-ci-runners/](sdlc-ci-runners/README.ru.md) | 在 Kubernetes 中自托管 GitHub Actions runner：ARC runner scale sets、带 registry 缓存的 rootless BuildKit，不用 privileged docker，pull request 单独的池 | 草稿，持续演进 |
+| [device-workstation-stages/](device-workstation-stages/README.ru.md) | 工作站即代码：分阶段的操作系统标准（现为 Ubuntu LTS，Omarchy 为候选）、操作系统之外的开发环境（Nix、Dev Containers）、以重建代替整盘备份、内核与内存防护、恢复演练 | 草稿，持续演进 |
 
 计划中：AI 网关、身份。
 

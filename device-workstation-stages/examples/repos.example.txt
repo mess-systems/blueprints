@@ -1,0 +1,3 @@
+# ПРИМЕР. URL и каталог. Имена условные.
+https://git.sdlc.eng.svc.mess.systems/corp/device-workstation.git device-workstation
+https://git.sdlc.eng.svc.mess.systems/platform/data-cube.git data-cube

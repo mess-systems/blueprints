@@ -1,0 +1,14 @@
+# ПРИМЕР. Копия только каталогов вне git и описания станции.
+[Unit]
+Description=Restic backup of workstation state (example)
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=oneshot
+# RESTIC_REPOSITORY указывает на хранилище corp-infra-backup-endpoint (пример имени).
+# Пароль приходит командой из менеджера секретов; путь по грамматике стандарта, здесь не указывается.
+Environment=RESTIC_REPOSITORY=s3:https://<s3-endpoint>/corp-infra-backup-endpoint
+Environment=RESTIC_PASSWORD_COMMAND=<команда получения пароля из OpenBao>
+ExecStart=/usr/bin/restic backup --host <asset-id> --tag capability=endpoint --tag endpoint-profile=<profile> --tag kind=incr --tag retention=daily --files-from %h/.config/workstation/restic-include.txt
+ExecStartPost=/usr/bin/restic forget --host <asset-id> --keep-daily 7 --keep-weekly 4 --keep-monthly 6 --prune

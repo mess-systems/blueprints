@@ -1,0 +1,15 @@
+# ПРИМЕР. Ubuntu autoinstall (Ubuntu Desktop 23.04 и новее). Значения условные.
+autoinstall:
+  version: 1
+  locale: ru_RU.UTF-8
+  keyboard:
+    layout: us,ru
+  identity:
+    hostname: eng-lt-k7m2qa          # имя станции по 06 Endpoint conventions
+    username: <user>
+    password: "<хеш, задаётся при выдаче, не хранится в репозитории>"
+  storage:
+    layout:
+      name: hybrid                    # проверить: имя раскладки для TPM-backed FDE в 26.04
+  late-commands:
+    - curtin in-target -- apt-get install -y ansible git

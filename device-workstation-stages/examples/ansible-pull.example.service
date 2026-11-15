@@ -1,0 +1,11 @@
+# ПРИМЕР. Роль workstation применяется со станции (pull), а не с сервера (push).
+[Unit]
+Description=Apply workstation role (example)
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=oneshot
+EnvironmentFile=/etc/workstation/profile.env
+# profile.env содержит только ENDPOINT_PROFILE=std|eng|paw
+ExecStart=/usr/bin/ansible-pull --url https://git.sdlc.eng.svc.mess.systems/corp/device-workstation.git --checkout main --only-if-changed --extra-vars endpoint_profile=${ENDPOINT_PROFILE} site.yml

@@ -1,0 +1,8 @@
+# ПРИМЕР. ~/.config/chezmoi/chezmoi.toml
+# chezmoi вызывает "<vault.command> kv get -format=json <ключ>".
+# CLI OpenBao поддерживает "bao kv get -format=json"; официальной поддержки OpenBao в chezmoi нет — проверить на стенде.
+[vault]
+    command = "bao"
+
+# В шаблоне (KV v2): {{ (vault "<mount>/<path>").data.data.<field> }}
+# Запасной путь без функции vault: {{ output "bao" "kv" "get" "-field=<field>" "<mount>/<path>" | trim }}
