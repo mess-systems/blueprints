@@ -1,0 +1,14 @@
+# ПРИМЕР. Алерт «высокая нагрузка и заблокированные процессы».
+# Метрики node_exporter: node_load1, node_procs_blocked. Пороги условные, подбираются на учениях.
+groups:
+  - name: endpoint-workstation
+    rules:
+      - alert: EndpointBlockedProcesses
+        expr: node_procs_blocked{capability="endpoint"} > 20 and node_load1{capability="endpoint"} > 50
+        for: 5m
+        labels:
+          severity: warning
+          capability: endpoint
+        annotations:
+          summary: "Станция {{ $labels.instance }}: много процессов в D-state и высокая нагрузка"
+          description: "Похоже на зависание в ядре. Сохранить стеки (SysRq t/w), затем мягкий выход: SysRq s, u, b."

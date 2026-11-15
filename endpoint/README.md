@@ -34,7 +34,10 @@ The employee device: laptops and desktops that people work on. This blueprint fi
 | Windows 11 Pro | `std`, `eng`, `paw` |
 | macOS (current or previous release) | `std`, `eng`, `paw` |
 | Ubuntu 26.04 LTS | `std`, `eng`, `paw` |
-| CachyOS | `eng` only |
+| CachyOS | outside the standard: lab exception on individual `eng` workstations, no new adoption ([Hold](https://github.com/mess-systems/tech-radar/blob/main/technologies/cachyos.md)) |
+| Omarchy | outside the standard: lab exception on individual `eng` workstations, candidate for 2027 ([Assess](https://github.com/mess-systems/tech-radar/blob/main/technologies/omarchy.md)) |
+
+OS standard by profile and stage, workstation build and recovery, conditions for Omarchy: [`device-workstation-stages`](../device-workstation-stages/README.ru.md) (Russian).
 
 ## 3. Naming and labels
 
@@ -93,7 +96,8 @@ The count is the same on every platform of a profile. If the SPIRE agent is also
 | Windows 11 Pro | All agents have official builds. BitLocker, Defender and firewall are built in. |
 | macOS | Apple MDM profiles come from the Fleet server; no agent besides fleetd is needed for them. FileVault is built in. |
 | Ubuntu 26.04 LTS | All agents have Debian or Ubuntu packages. LUKS2 with TPM2. |
-| CachyOS | Fleet, Wazuh and NetBird are available for the platform. |
+| CachyOS | Outside the standard (Hold). Fleet, Wazuh and NetBird are available for the platform. Exception workstations must keep a fallback long-term kernel and the safeguards of [`device-workstation-stages`](../device-workstation-stages/README.ru.md). |
+| Omarchy | Outside the standard, lab exception (Assess). Fleet supports the platform; LUKS key escrow in Fleet is not available yet. The installer requires Secure Boot and TPM to be turned off. Wazuh and NetBird availability not verified. Stable channel only, with the safeguards of [`device-workstation-stages`](../device-workstation-stages/README.ru.md). |
 
 ## 5. Standard applications
 

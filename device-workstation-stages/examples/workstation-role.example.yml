@@ -1,0 +1,50 @@
+# ПРИМЕР. Фрагмент роли workstation. Значения условные.
+- name: "Страховки ядра: SysRq и детектор зависших задач"
+  ansible.builtin.copy:
+    src: sysctl-workstation.conf
+    dest: /etc/sysctl.d/90-workstation.conf
+    mode: "0644"
+  notify: reload sysctl
+
+- name: Лимит coredump
+  ansible.builtin.copy:
+    src: coredump.conf
+    dest: /etc/systemd/coredump.conf.d/90-workstation.conf
+    mode: "0644"
+
+- name: OOM-демон по стандарту — earlyoom
+  ansible.builtin.package:
+    name: earlyoom
+    state: present
+
+- name: earlyoom включён, systemd-oomd выключен, чтобы не было двух OOM-демонов
+  ansible.builtin.systemd_service:
+    name: "{{ item.name }}"
+    enabled: "{{ item.on }}"
+    state: "{{ 'started' if item.on else 'stopped' }}"
+  loop:
+    - { name: earlyoom, on: true }
+    - { name: systemd-oomd, on: false }
+  failed_when: false   # systemd-oomd может отсутствовать в дистрибутиве
+
+- name: Запасное долгосрочное ядро в загрузчике
+  ansible.builtin.apt:
+    name: "{{ workstation_fallback_kernel_package }}"   # пакет по дистрибутиву, задаётся в vars
+    state: present
+
+- name: Nix поверх ОС (вариант A), только eng и только после решения по прототипу
+  when: endpoint_profile == "eng" and workstation_nix_enabled | bool
+  block:
+    - name: Установка Nix через Determinate Nix Installer; доверенные кеши задаёт роль, не пользователь
+      ansible.builtin.shell: >
+        curl -fsSL https://install.determinate.systems/nix | sh -s -- install --no-confirm
+        --extra-conf "extra-substituters = {{ workstation_nix_substituter }}"
+        --extra-conf "extra-trusted-public-keys = {{ workstation_nix_public_key }}"
+      args:
+        creates: /nix/receipt.json
+      # Удаление: /nix/nix-installer uninstall (квитанция /nix/receipt.json)
+
+- name: На paw нет Nix, dev-контейнеров и AI-клиентов
+  when: endpoint_profile == "paw"
+  ansible.builtin.assert:
+    that: not workstation_nix_enabled | bool

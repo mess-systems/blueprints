@@ -1,0 +1,10 @@
+// ПРИМЕР. .devcontainer/devcontainer.json (вариант B: удалённая IDE и CI)
+{
+  "name": "example-java",
+  "image": "oci.sdlc.eng.svc.mess.systems/corp-device/devcontainer-java:2026.11",
+  "remoteUser": "vscode",
+  "containerEnv": {
+    "GRADLE_USER_HOME": "/home/vscode/.gradle"
+  },
+  "postCreateCommand": "gradle --version"
+}

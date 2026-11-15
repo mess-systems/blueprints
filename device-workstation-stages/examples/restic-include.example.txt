@@ -1,0 +1,3 @@
+# ПРИМЕР. Только то, чего нет в git, в dotfiles и в описании станции.
+/home/<user>/Documents
+/home/<user>/.config/<app-not-yet-in-dotfiles>

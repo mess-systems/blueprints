@@ -34,7 +34,10 @@
 | Windows 11 Pro | `std`、`eng`、`paw` |
 | macOS（当前或上一版本） | `std`、`eng`、`paw` |
 | Ubuntu 26.04 LTS | `std`、`eng`、`paw` |
-| CachyOS | 仅 `eng` |
+| CachyOS | 标准之外：仅作为个别 `eng` 工作站的实验室例外，不再新增（[Hold](https://github.com/mess-systems/tech-radar/blob/main/technologies/cachyos.md)） |
+| Omarchy | 标准之外：个别 `eng` 工作站的实验室例外，2027 年候选（[Assess](https://github.com/mess-systems/tech-radar/blob/main/technologies/omarchy.md)） |
+
+按配置档和阶段的操作系统标准、工作站的构建与恢复、Omarchy 的条件：[`device-workstation-stages`](../device-workstation-stages/README.ru.md)（俄文）。
 
 ## 3. 命名与标签
 
@@ -93,7 +96,8 @@ Fleet 和 Wazuh 中的标签带有 `capability=endpoint`，并遵循[标签与�
 | Windows 11 Pro | 所有代理均有官方版本。BitLocker、Defender 和防火墙为内置。 |
 | macOS | Apple MDM 配置描述文件由 Fleet 服务器下发；除 fleetd 外无需其他代理。FileVault 为内置。 |
 | Ubuntu 26.04 LTS | 所有代理均有 Debian 或 Ubuntu 软件包。LUKS2 配合 TPM2。 |
-| CachyOS | Fleet、Wazuh 和 NetBird 在该平台上可用。 |
+| CachyOS | 标准之外（Hold）。Fleet、Wazuh 和 NetBird 在该平台上可用。例外工作站必须保留备用长期内核以及 [`device-workstation-stages`](../device-workstation-stages/README.ru.md) 中的防护措施。 |
+| Omarchy | 标准之外，实验室例外（Assess）。Fleet 支持该平台，但 Fleet 尚不支持 LUKS 密钥托管。安装程序要求关闭 Secure Boot 和 TPM。Wazuh 和 NetBird 的可用性未验证。仅使用 stable 通道，并采用 [`device-workstation-stages`](../device-workstation-stages/README.ru.md) 中的防护措施。 |
 
 ## 5. 标准应用
 

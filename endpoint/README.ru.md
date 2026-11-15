@@ -34,7 +34,10 @@
 | Windows 11 Pro | `std`, `eng`, `paw` |
 | macOS (текущая или предыдущая версия) | `std`, `eng`, `paw` |
 | Ubuntu 26.04 LTS | `std`, `eng`, `paw` |
-| CachyOS | только `eng` |
+| CachyOS | вне стандарта: лабораторное исключение на отдельных станциях `eng`, без новых внедрений ([Hold](https://github.com/mess-systems/tech-radar/blob/main/technologies/cachyos.md)) |
+| Omarchy | вне стандарта: лабораторное исключение на отдельных станциях `eng`, кандидат на 2027 ([Assess](https://github.com/mess-systems/tech-radar/blob/main/technologies/omarchy.md)) |
+
+Стандарт ОС по профилям и этапам, сборка и восстановление станции, условия для Omarchy: [`device-workstation-stages`](../device-workstation-stages/README.ru.md).
 
 ## 3. Имена и метки
 
@@ -93,7 +96,8 @@ AI пользуются все, поэтому контроль AI-клиент�
 | Windows 11 Pro | У всех агентов есть официальные сборки. BitLocker, Defender и firewall встроены. |
 | macOS | MDM-профили Apple выдаёт сервер Fleet; кроме fleetd, отдельный агент не нужен. FileVault встроен. |
 | Ubuntu 26.04 LTS | У всех агентов есть пакеты для Debian или Ubuntu. LUKS2 с TPM2. |
-| CachyOS | Fleet, Wazuh и NetBird доступны для платформы. |
+| CachyOS | Вне стандарта (Hold). Fleet, Wazuh и NetBird доступны для платформы. На станциях-исключениях обязательны запасное долгосрочное ядро и страховки из [`device-workstation-stages`](../device-workstation-stages/README.ru.md). |
+| Omarchy | Вне стандарта, лабораторное исключение (Assess). Fleet поддерживает платформу, эскроу ключей LUKS в Fleet пока нет. Установщик требует выключить Secure Boot и TPM. Доступность Wazuh и NetBird не проверена. Только канал stable и страховки из [`device-workstation-stages`](../device-workstation-stages/README.ru.md). |
 
 ## 5. Стандартные приложения
 
