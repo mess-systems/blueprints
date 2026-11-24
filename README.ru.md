@@ -24,6 +24,7 @@
 | [adlc-agent-evals/](adlc-agent-evals/README.ru.md) | Наблюдение и проверка AI-агентов в Kubernetes без отдельной платформы на старте: трассы в Tempo, токены и стоимость из LLM-шлюза, проверочные случаи с эталоном из живого кластера, регрессионный гейт в CI | Черновик, развивается |
 | [sdlc-ci-runners/](sdlc-ci-runners/README.ru.md) | Self-hosted раннеры GitHub Actions в Kubernetes: ARC runner scale sets, rootless BuildKit с кэшем в registry, без privileged docker, отдельный пул для pull request | Черновик, развивается |
 | [device-workstation-stages/](device-workstation-stages/README.ru.md) | Рабочая станция как код: стандарт ОС по этапам (Ubuntu LTS сейчас, Omarchy кандидат), окружения разработчика вне ОС (Nix, Dev Containers), пересборка вместо копии всего диска, страховки ядра и памяти, учения по восстановлению | Черновик, развивается |
+| [patch-management/](patch-management/README.ru.md) | Как компания на открытом стеке держит программное обеспечение актуальным: классификация срока по публичной доступности и известной эксплуатации, инвентарь как SBOM, сканирование в CI, подпись артефактов, продвижение по окружениям с откатом | Черновик, развивается |
 
 Следующие: AI-шлюз, идентичность.
 

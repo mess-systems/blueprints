@@ -1,0 +1,47 @@
+# Blueprint patch-management: EXAMPLE, not a running configuration.
+# Fictional names under mess.systems.
+# Shape of a CI job: scan, CycloneDX SBOM, upload to Dependency-Track,
+# Cosign sign, push to Harbor. Compatible with GitHub Actions and
+# Forgejo Actions syntax at the 'on' / 'jobs' level.
+#
+# Replace image names, project keys and secret references before use.
+# Secret values themselves are never written here.
+
+name: scan-and-publish
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  scan-and-publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # Build is omitted: plug in the repository's real build.
+      # The image reference is an example. Promote by digest, not a moving tag.
+
+      - name: Scan image and write CycloneDX SBOM
+        # Official CLI forms: https://www.trivy.dev/docs/latest/guide/supply-chain/sbom/
+        run: |
+          trivy image --exit-code 0 --format cyclonedx             --output sbom.cdx.json             oci.sdlc.eng.svc.mess.systems/eng-sdlc/example-app:unused-tag
+          trivy image --exit-code 1 --severity CRITICAL             oci.sdlc.eng.svc.mess.systems/eng-sdlc/example-app:unused-tag
+
+      - name: Upload SBOM to Dependency-Track
+        # Official POST form: https://docs.dependencytrack.org/usage/cicd/
+        # API token comes from the secrets store at runtime, not from this file.
+        run: |
+          curl -sS -X POST             "https://vuln.sec.eng.svc.mess.systems/api/v1/bom"             -H "X-Api-Key: ${DEPENDENCY_TRACK_TOKEN}"             -F "autoCreate=true"             -F "projectName=eng-sdlc-example-app"             -F "projectVersion=${IMAGE_DIGEST}"             -F "bom=@sbom.cdx.json"
+
+      - name: Sign image with Cosign
+        # Official form: https://docs.sigstore.dev/cosign/key_management/signing_with_self-managed_keys/
+        run: |
+          cosign sign --key "${COSIGN_KEY_FILE}"             oci.sdlc.eng.svc.mess.systems/eng-sdlc/example-app@${IMAGE_DIGEST}
+
+      - name: Push only happens in the repository's real publish step
+        run: echo "Publish to Harbor is out of scope of this skeleton."

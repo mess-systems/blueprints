@@ -1,0 +1,35 @@
+# Blueprint patch-management: EXAMPLE, not a running configuration.
+# Fictional names under mess.systems.
+# Argo CD Application that tracks a desired image by digest.
+# Official automated sync fields:
+#   https://argo-cd.readthedocs.io/en/stable/user-guide/auto_sync/
+#
+# This example keeps automated sync off for a production-shaped app,
+# so that `argocd app rollback` remains possible if it is ever needed.
+# The preferred rollback is still a git revert of the digest.
+
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: eng-example-app-prd
+  namespace: gitops
+  labels:
+    mess.systems/plane: eng
+    mess.systems/domain: sdlc
+spec:
+  project: eng-sdlc
+  source:
+    repoURL: https://git.sdlc.eng.svc.mess.systems/eng/example-app.git
+    targetRevision: main
+    path: deploy/prd
+  destination:
+    # The destination server and namespace are placeholders.
+    server: https://kubernetes.default.svc
+    namespace: example-app-prd
+  # Image digest is expected to be pinned in the manifests under path,
+  # for example:
+  #   oci.sdlc.eng.svc.mess.systems/eng-sdlc/example-app@sha256:...
+  syncPolicy:
+    automated: null
+    retry:
+      limit: 3
