@@ -1,0 +1,78 @@
+# Пример: маршруты моделей шлюза gateway.ai.corp для одной юрисдикции.
+# Плейсхолдеры <...> заменяются при развёртывании; значения секретов берутся из OpenBao
+# и передаются процессу переменными окружения. Синтаксис сверен с документацией
+# agentgateway 1.7.0 (virtual keys, custom provider, regex guardrails, model costs, tracing).
+# yaml-language-server: $schema=https://agentgateway.dev/schema/config
+config:
+  modelCatalog:
+  - file: ./costs/catalog.json          # каталог цен из Git: единственный источник цен
+  database:
+    url: "$GATEWAY_DATABASE_URL"        # нужен для ключей с бюджетом
+frontendPolicies:
+  tracing:
+    host: <llm-traces-host>:443        # экземпляр Langfuse той же юрисдикции
+    protocol: http
+    path: /api/public/otel/v1/traces
+    randomSampling: true
+    attributes:
+      # Выражения CEL; Langfuse сопоставляет user.id и session.id с пользователем и сессией.
+      user.id: 'request.headers["x-user-id"]'
+      session.id: 'request.headers["x-session-id"]'
+    policies:
+      backendTLS: {}
+      requestHeaderModifier:
+        set:
+          Authorization: "Basic $LANGFUSE_AUTH_HEADER"
+llm:
+  policies:
+    apiKey:
+      mode: strict
+      keys:
+      - keyHash: sha256:<hash-of-user-handle-cli-key>
+        metadata:
+          name: user-<handle>-cli
+        allowedModels: [<general-model>, <code-model>]
+      - keyHash: sha256:<hash-of-agent-code-review-key>
+        metadata:
+          name: agent-code-review
+        allowedModels: [<code-model>]
+      - keyHash: sha256:<hash-of-langfuse-key>
+        metadata:
+          name: svc-corp-ai-langfuse
+        allowedModels: [<judge-model>]
+  models:
+  # Модель провайдера: запрос идёт через фильтр маскирования guard.ai.corp,
+  # который пересылает его провайдеру и восстанавливает значения в ответе.
+  - name: <general-model>
+    provider:
+      custom:
+        formats:
+        - type: completions
+    params:
+      apiKey: "$PROVIDER_A_API_KEY"
+      model: <provider-model-id>
+      baseUrl: "https://<guard-host>/<provider-a-route>"
+    guardrails:
+      request:
+      - regex:
+          action: reject
+          rules:
+          - pattern: "api[_-]?key[=:]\\s*\\S+"
+          - pattern: "-----BEGIN [A-Z ]*PRIVATE KEY-----"
+        rejection:
+          status: 400
+          headers:
+            set:
+              content-type: "application/json"
+          body: |
+            {"error": {"message": "Request contains credentials", "type": "invalid_request_error", "code": "credentials_detected"}}
+  # Своя модель с открытыми весами на vLLM: тот же путь, без внешнего провайдера.
+  - name: <code-model>
+    provider:
+      custom:
+        formats:
+        - type: completions
+    params:
+      apiKey: "$OWN_MODELS_API_KEY"
+      model: <served-model-name>
+      baseUrl: "https://<own-models-host>/v1"

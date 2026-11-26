@@ -1,0 +1,16 @@
+# Пример: настройка agentdesktop для рабочих станций разработчиков.
+# Блок llmGateway и подписка Codex сверены с README agentdesktop 0.7.0
+# (раздел Provider subscriptions). Codex по подписке проверен проектом с синтетическими
+# учётными данными и тестовым шлюзом; перед Trial проверяется на одной учётной записи.
+llmGateway:
+  url: https://<gateway-host>/v1
+  authentication:
+    type: oidc
+    issuer: https://<sso-host>/realms/<realm>
+    clientId: agentdesktop
+programs:
+  codex:
+    # Составные учётные данные: шлюз проверяет идентичность сотрудника и только затем
+    # восстанавливает токен подписки. На шлюзе для этого маршрута base URL провайдера
+    # OpenAI: https://chatgpt.com/backend-api/codex (полоса 2, README раздел 12).
+    auth: subscription

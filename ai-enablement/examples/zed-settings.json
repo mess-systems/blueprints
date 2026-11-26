@@ -1,0 +1,19 @@
+// Пример: фрагмент settings.json Zed. Ключ в файл не пишется: Zed берёт его из переменной
+// окружения GATEWAY_API_KEY (<PROVIDER_ID>_API_KEY) или из системного хранилища ключей.
+// Сверено с https://zed.dev/docs/ai/use-api-access.
+{
+  "language_models": {
+    "openai_compatible": {
+      "gateway": {
+        "api_url": "https://<gateway-host>/v1",
+        "available_models": [
+          {
+            "name": "<code-model>",
+            "display_name": "Code model (gateway)",
+            "max_tokens": 128000
+          }
+        ]
+      }
+    }
+  }
+}

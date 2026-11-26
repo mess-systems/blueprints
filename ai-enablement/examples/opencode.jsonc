@@ -1,0 +1,44 @@
+// Пример: OpenCode на шлюзе gateway.ai.corp.
+// Провайдер задаётся как OpenAI-совместимый с baseURL шлюза; ключ берётся из переменной
+// окружения, которую выставляет agentdesktop или системное хранилище ключей.
+// Формат провайдеров сверен с https://opencode.ai/docs/providers/, навыков с
+// https://opencode.ai/docs/skills/. Формат permissions (OpenCode 2.x: правила action /
+// resource / effect, побеждает последнее совпадение) сверен с https://opencode.ai/docs/permissions/;
+// точные имена полей перед применением сверяются со схемой установленной версии.
+{
+  "$schema": "https://opencode.ai/config.json",
+  "provider": {
+    "gateway": {
+      "npm": "@ai-sdk/openai-compatible",
+      "name": "mess.systems gateway",
+      "options": {
+        "baseURL": "https://<gateway-host>/v1",
+        "apiKey": "{env:GATEWAY_CLIENT_KEY}"
+      },
+      "models": {
+        "<general-model>": {},
+        "<code-model>": {}
+      }
+    }
+  },
+  "model": "gateway/<code-model>",
+  "mcp": {
+    "company": {
+      "type": "remote",
+      "url": "https://<gateway-host>/mcp"
+    }
+  },
+  "permissions": [
+    // Shell: спрашивать перед выполнением.
+    { "action": "shell", "resource": "*", "effect": "ask" },
+    { "action": "shell", "resource": "git status *", "effect": "allow" },
+    { "action": "shell", "resource": "git diff *", "effect": "allow" },
+    { "action": "shell", "resource": "git push *", "effect": "deny" },
+    // Чтение проекта без подтверждения, кроме файлов окружения.
+    { "action": "read", "resource": "*", "effect": "allow" },
+    { "action": "read", "resource": "*.env", "effect": "deny" },
+    // Навыки вне каталога компании запрещены.
+    { "action": "skill", "resource": "*", "effect": "deny" },
+    { "action": "skill", "resource": "mess-*", "effect": "allow" }
+  ]
+}

@@ -1,0 +1,50 @@
+# Пример: MCP через шлюз с OAuth в Keycloak и фильтром инструментов по группам.
+# Форма routes, mcpAuthentication и mcpAuthorization сверены с руководством agentgateway
+# для Keycloak и страницей MCP authorization (agentgateway 1.7.0).
+# В Keycloak нужны: маппер аудитории на клиенте (иначе aud=account и шлюз отвергает токен),
+# маппер groups и выключенный host-sending-registration-request-must-match в политике Trusted Hosts.
+# yaml-language-server: $schema=https://agentgateway.dev/schema/config
+gateways:
+  default:
+    port: 3000
+routes:
+- backends:
+  - mcp:
+      targets:
+      - name: tracker
+        mcp:
+          host: https://<tracker-mcp-host>/mcp
+      - name: git
+        mcp:
+          host: https://<git-mcp-host>/mcp
+      - name: llm-traces
+        mcp:
+          host: https://<llm-traces-host>/api/public/mcp
+      - name: admin-tools
+        mcp:
+          host: https://<admin-mcp-host>/mcp
+  policies:
+    mcpAuthentication:
+      mode: strict
+      issuer: https://<sso-host>/realms/<realm>
+      audiences:
+      - <gateway-client-id>
+      provider:
+        keycloak: {}
+      resourceMetadata:
+        resource: https://<gateway-host>/mcp
+        scopesSupported:
+        - openid
+        bearerMethodsSupported:
+        - header
+    mcpAuthorization:
+      rules:
+      # Чтение трекера: всем с валидным токеном.
+      - 'mcp.tool.target == "tracker" && mcp.tool.name.startsWith("get_")'
+      # Git: разработчикам.
+      - 'mcp.tool.target == "git" && "role-developers" in jwt.groups'
+      # Трассировки: участникам проекта Langfuse. MCP-сервер Langfuse по умолчанию
+      # даёт и запись, поэтому разрешены только инструменты чтения.
+      - 'mcp.tool.target == "llm-traces" && "app-llm-traces-user" in jwt.groups && (mcp.tool.name.startsWith("get") || mcp.tool.name.startsWith("list"))'
+      # Администрирование: только администраторам шлюза.
+      - 'mcp.tool.target == "admin-tools" && "app-gateway-admin" in jwt.groups'
